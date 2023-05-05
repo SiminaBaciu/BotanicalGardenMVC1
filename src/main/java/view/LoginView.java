@@ -1,13 +1,11 @@
 package view;
 
-import presenter.LoginPresenter;
-
 import java.awt.*;
-import java.awt.event.*;
-import java.util.Objects;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class LoginView extends JFrame implements LoginInterface {
+public class LoginView extends JFrame {
 
     Container container = getContentPane();
 
@@ -17,7 +15,6 @@ public class LoginView extends JFrame implements LoginInterface {
     private JPasswordField password = new JPasswordField(5);
     private JButton login = new JButton("Login");
     private JButton client = new JButton("Client");
-    LoginPresenter loginPresenter;
 
     public LoginView() {
 
@@ -31,8 +28,8 @@ public class LoginView extends JFrame implements LoginInterface {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
         setVisible(true);
-        loginPresenter = new LoginPresenter(this);
     }
+
 
     public void setLayoutManag() {
         container.setLayout(null);
@@ -58,55 +55,62 @@ public class LoginView extends JFrame implements LoginInterface {
         add(password);
         add(login);
         add(client);
-
-        login.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                verifyUser();
-            }
-        });
-        client.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                UserView uv = new UserView();
-                uv.setVisible(true);
-            }
-        });
-
     }
 
+    public Container getContainer() {
+        return container;
+    }
 
-    public void displayMessage(String message) {
-        JOptionPane.showMessageDialog(this, message);
+    public void setContainer(Container container) {
+        this.container = container;
+    }
+
+    public JLabel getUsernameLabel() {
+        return usernameLabel;
+    }
+
+    public void setUsernameLabel(JLabel usernameLabel) {
+        this.usernameLabel = usernameLabel;
     }
 
     public String getUsername() {
         return username.getText();
     }
 
-    public char[] getPassword() {
-        return password.getPassword();
+    public void setUsername(JTextField username) {
+        this.username = username;
     }
 
-    public void verifyUser() {
-        String username = getUsername();
-        String password = String.valueOf(getPassword());
-
-        String type = loginPresenter.verifyUser(username, password);
-        if (type == null) {
-            JOptionPane.showMessageDialog(this, "Wrong username or password!");
-        } else {
-            switch (Objects.requireNonNull(type)) {
-                case "EMPLOYEE" -> {
-                    EmployeeView employeeView = new EmployeeView();
-                    employeeView.setVisible(true);
-                }
-                case "ADMIN" -> {
-                    AdminView adminView = new AdminView();
-                    adminView.setVisible(true);
-                }
-            }
-        }
+    public JLabel getPasswordLabel() {
+        return passwordLabel;
     }
 
+    public void setPasswordLabel(JLabel passwordLabel) {
+        this.passwordLabel = passwordLabel;
+    }
+
+    public String getPassword() {
+        return password.getText();
+    }
+
+    public void setPassword(JPasswordField password) {
+        this.password = password;
+    }
+
+    public JButton getLogin() {
+        return login;
+    }
+
+    public void setLogin(JButton login) {
+        this.login = login;
+    }
+
+    public JButton getClient() {
+        return client;
+    }
+
+    public void setClient(JButton client) {
+        this.client = client;
+    }
 }
 

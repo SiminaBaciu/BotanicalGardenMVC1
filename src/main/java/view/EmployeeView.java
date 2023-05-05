@@ -1,43 +1,46 @@
 package view;
 
-import presenter.EmployeePresenter;
-
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class EmployeeView extends JFrame implements EmployeeInterface {
+public class EmployeeView extends JFrame{
 
     Container container = getContentPane();
 
     private JLabel idLabel = new JLabel("ID: ");
-    private JTextField idField = new JTextField();
+    private JTextField id = new JTextField();
     private JLabel nameLabel = new JLabel("Name: ");
-    private JTextField nameField = new JTextField();
+    private JTextField name = new JTextField();
     private JLabel typeLabel = new JLabel("Type: ");
-    private JTextField typeField = new JTextField();
+    private JTextField type = new JTextField();
     private JLabel speciesLabel = new JLabel("Species: ");
-    private JTextField speciesField = new JTextField();
+    private JTextField species = new JTextField();
     private JButton back = new JButton("Back");
     private JButton insert = new JButton("Insert");
     private JButton delete = new JButton("Delete");
     private JButton update = new JButton("Update");
     private JButton plants = new JButton("View plants");
+    private JButton xml = new JButton("XML");
+    private JButton txt = new JButton("TXT");
+    private JButton csv = new JButton("CSV");
+    private JButton json = new JButton("JSON");
+    private JButton charts = new JButton("Charts");
+
+    private JTable plantsTable = new JTable(new DefaultTableModel());
+
     private JScrollPane scrollPane = new JScrollPane();
-    private EmployeePresenter employeePresenter = null;
+
 
     public EmployeeView() {
-
+        scrollPane.setViewportView(plantsTable);
         setLayoutManag();
         setLocAndSize();
         addComponent();
         this.setTitle("Employee");
-        //   this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setBounds(500, 150, 900, 700);
-
-        employeePresenter = new EmployeePresenter(this);
-        updatePlants();
     }
 
     /**
@@ -50,25 +53,31 @@ public class EmployeeView extends JFrame implements EmployeeInterface {
 
     public void setLocAndSize() {
         idLabel.setBounds(50, 30, 100, 30);
-        idField.setBounds(80, 30, 75, 30);
+        id.setBounds(80, 30, 75, 30);
 
         nameLabel.setBounds(170, 30, 200, 30);
-        nameField.setBounds(240, 30, 125, 30);
+        name.setBounds(240, 30, 125, 30);
 
         typeLabel.setBounds(370, 30, 100, 30);
-        typeField.setBounds(440, 30, 125, 30);
+        type.setBounds(440, 30, 125, 30);
 
         speciesLabel.setBounds(580, 30, 100, 30);
-        speciesField.setBounds(630, 30, 125, 30);
+        species.setBounds(630, 30, 125, 30);
 
-        plants.setBounds(100, 520, 100, 50);
-        insert.setBounds(200, 520, 100, 50);
-        delete.setBounds(330, 520, 100, 50);
-        update.setBounds(460, 520, 100, 50);
-        back.setBounds(590, 520, 100, 50);
+        plants.setBounds(130, 520, 100, 50);
+        insert.setBounds(260, 520, 100, 50);
+        delete.setBounds(390, 520, 100, 50);
+        update.setBounds(520, 520, 100, 50);
+
+        xml.setBounds(130, 600, 100, 50);
+        txt.setBounds(260, 600, 100, 50);
+        csv.setBounds(390, 600, 100, 50);
+        json.setBounds(520, 600, 100, 50);
+        charts.setBounds(650,600,100,50);
+
+        back.setBounds(650, 520, 100, 50);
         back.addActionListener(e -> {
             setVisible(false);
-            //parentInterface.setVisible(true);
 
         });
 
@@ -79,93 +88,192 @@ public class EmployeeView extends JFrame implements EmployeeInterface {
      * Adds all view parts into the container
      */
     public void addComponent() {
-        container.add(idField);
+        container.add(id);
         container.add(idLabel);
-        container.add(nameField);
-        container.add(typeField);
+        container.add(name);
+        container.add(type);
         container.add(nameLabel);
         container.add(typeLabel);
-        container.add(speciesField);
+        container.add(species);
         container.add(speciesLabel);
         container.add(delete);
         container.add(update);
         container.add(insert);
         container.add(plants);
         container.add(back);
+        container.add(xml);
+        container.add(txt);
+        container.add(csv);
+        container.add(json);
+        container.add(charts);
         container.add(scrollPane);
-
-        insert.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                employeePresenter.insertPlant();
-                updatePlants();
-            }
-        });
-        delete.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                employeePresenter.deletePlant();
-                updatePlants();
-            }
-        });
-        update.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                employeePresenter.updatePlant();
-                updatePlants();
-            }
-        });
-
-        plants.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                UserView userView = new UserView();
-                userView.setVisible(true);
-            }
-        });
     }
 
-    public void updatePlants() {
-        JTable table = employeePresenter.updatePlantTable();
-        getScrollPane().setViewportView(table);
-        setVisible(true);
+    public int getId() {
+        return Integer.parseInt(id.getText());
     }
 
-
-    public int getIdField() {
-        return Integer.parseInt(idField.getText());
+    public String getName() {
+        return name.getText();
     }
 
-    public String getNameField() {
-        return nameField.getText();
+    public String getSpecies() {
+        return species.getText();
     }
 
-    public String getTypeField() {
-        return typeField.getText();
+    public Container getContainer() {
+        return container;
     }
 
-    public String getSpeciesField() {
-        return speciesField.getText();
+    public void setContainer(Container container) {
+        this.container = container;
+    }
+
+    public JLabel getIdLabel() {
+        return idLabel;
+    }
+
+    public void setIdLabel(JLabel idLabel) {
+        this.idLabel = idLabel;
+    }
+
+    public void setId(JTextField id) {
+        this.id = id;
+    }
+
+    public JLabel getNameLabel() {
+        return nameLabel;
+    }
+
+    public void setNameLabel(JLabel nameLabel) {
+        this.nameLabel = nameLabel;
+    }
+
+    public void setName(JTextField name) {
+        this.name = name;
+    }
+
+    public JLabel getTypeLabel() {
+        return typeLabel;
+    }
+
+    public void setTypeLabel(JLabel typeLabel) {
+        this.typeLabel = typeLabel;
+    }
+
+    public String getTypes() {
+        return type.getText();
+    }
+
+    public void setType(JTextField type) {
+        this.type = type;
+    }
+
+    public JLabel getSpeciesLabel() {
+        return speciesLabel;
+    }
+
+    public void setSpeciesLabel(JLabel speciesLabel) {
+        this.speciesLabel = speciesLabel;
+    }
+
+    public void setSpecies(JTextField species) {
+        this.species = species;
+    }
+
+    public JButton getBack() {
+        return back;
+    }
+
+    public void setBack(JButton back) {
+        this.back = back;
+    }
+
+    public JButton getCharts() {
+        return charts;
+    }
+
+    public void setCharts(JButton charts) {
+        this.charts = charts;
+    }
+
+    public JButton getInsert() {
+        return insert;
+    }
+
+    public void setInsert(JButton insert) {
+        this.insert = insert;
+    }
+
+    public JButton getDelete() {
+        return delete;
+    }
+
+    public void setDelete(JButton delete) {
+        this.delete = delete;
+    }
+
+    public JButton getUpdate() {
+        return update;
+    }
+
+    public void setUpdate(JButton update) {
+        this.update = update;
+    }
+
+    public JButton getPlants() {
+        return plants;
+    }
+
+    public void setPlants(JButton plants) {
+        this.plants = plants;
+    }
+
+    public JButton getXml() {
+        return xml;
+    }
+
+    public void setXml(JButton xml) {
+        this.xml = xml;
+    }
+
+    public JButton getTxt() {
+        return txt;
+    }
+
+    public void setTxt(JButton txt) {
+        this.txt = txt;
+    }
+
+    public JButton getCsv() {
+        return csv;
+    }
+
+    public void setCsv(JButton csv) {
+        this.csv = csv;
+    }
+
+    public JButton getJson() {
+        return json;
+    }
+
+    public void setJson(JButton json) {
+        this.json = json;
+    }
+
+    public JTable getPlantsTable() {
+        return plantsTable;
+    }
+
+    public void setPlantsTable(JTable plantsTable) {
+        this.plantsTable = plantsTable;
     }
 
     public JScrollPane getScrollPane() {
-        return this.scrollPane;
+        return scrollPane;
     }
 
-    public void insertListener(ActionListener a) {
-        insert.addActionListener(a);
+    public void setScrollPane(JScrollPane scrollPane) {
+        this.scrollPane = scrollPane;
     }
-
-    public void deleteListener(ActionListener a) {
-        delete.addActionListener(a);
-    }
-
-    public void updateListener(ActionListener a) {
-        update.addActionListener(a);
-    }
-
-    public void plantListener(ActionListener a) {
-        plants.addActionListener(a);
-    }
-
 }

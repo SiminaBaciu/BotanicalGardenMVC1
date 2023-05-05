@@ -6,7 +6,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Assignment2" />
+        <module name="Assignment3_bun" />
+        <module name="MVVM_Assignment" />
       </profile>
     </annotationProcessing>
   </component>

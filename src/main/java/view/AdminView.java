@@ -1,23 +1,30 @@
 package view;
 
-import presenter.AdminPresenter;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AdminView extends JFrame implements AdminInterface {
+public class AdminView extends JFrame{
     Container container = getContentPane();
 
+    private JTable usersTable = new JTable(new DefaultTableModel());
+
     private JLabel idLabel = new JLabel("ID: ");
-    private JTextField idField = new JTextField();
+
+    private JTextField id = new JTextField();
+
     private JLabel usernameLabel = new JLabel("Username: ");
-    private JTextField userNameField = new JTextField();
+    private JTextField username = new JTextField();
+
     private JLabel passwordLabel = new JLabel("Password: ");
-    private JTextField passwordField = new JTextField();
+    private JTextField password = new JTextField();
+
     private JLabel typeLabel = new JLabel("Type: ");
-    private JTextField typeField = new JTextField();
+    private JTextField type = new JTextField();
+
     private JButton back = new JButton("Back");
     private JButton insert = new JButton("Insert");
     private JButton delete = new JButton("Delete");
@@ -25,19 +32,15 @@ public class AdminView extends JFrame implements AdminInterface {
     private JButton plants = new JButton("View plants");
     private JScrollPane scrollPane = new JScrollPane();
 
-    private AdminPresenter adminPresenter = null;
-    //LoginView login = new LoginView();
-
     public AdminView() {
 
         setLayoutManag();
         setLocAndSize();
         addComponent();
         this.setTitle("Admin");
-        // this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setBounds(500, 150, 900, 700);
-        adminPresenter = new AdminPresenter(this);
-        updateUsers();
+        scrollPane.setViewportView(usersTable);
+
     }
 
     /**
@@ -50,22 +53,22 @@ public class AdminView extends JFrame implements AdminInterface {
 
     public void setLocAndSize() {
         idLabel.setBounds(50, 30, 100, 30);
-        idField.setBounds(80, 30, 75, 30);
+        id.setBounds(80, 30, 75, 30);
 
         usernameLabel.setBounds(170, 30, 200, 30);
-        userNameField.setBounds(240, 30, 125, 30);
+        username.setBounds(240, 30, 125, 30);
 
         passwordLabel.setBounds(370, 30, 100, 30);
-        passwordField.setBounds(440, 30, 125, 30);
+        password.setBounds(440, 30, 125, 30);
 
         typeLabel.setBounds(580, 30, 100, 30);
-        typeField.setBounds(630, 30, 125, 30);
+        type.setBounds(630, 30, 125, 30);
 
-        plants.setBounds(100, 520, 100, 50);
-        insert.setBounds(200, 520, 100, 50);
-        delete.setBounds(330, 520, 100, 50);
-        update.setBounds(460, 520, 100, 50);
-        back.setBounds(590, 520, 100, 50);
+        plants.setBounds(130, 520, 100, 50);
+        insert.setBounds(260, 520, 100, 50);
+        delete.setBounds(390, 520, 100, 50);
+        update.setBounds(520, 520, 100, 50);
+        back.setBounds(650, 520, 100, 50);
         back.addActionListener(e -> {
             setVisible(false);
 
@@ -74,17 +77,15 @@ public class AdminView extends JFrame implements AdminInterface {
         scrollPane.setBounds(140, 90, 600, 400);
     }
 
-    /**
-     * Adds all view parts into the container
-     */
+
     public void addComponent() {
-        container.add(idField);
+        container.add(id);
         container.add(idLabel);
-        container.add(userNameField);
-        container.add(passwordField);
+        container.add(username);
+        container.add(password);
         container.add(usernameLabel);
         container.add(passwordLabel);
-        container.add(typeField);
+        container.add(type);
         container.add(typeLabel);
         container.add(delete);
         container.add(update);
@@ -93,62 +94,94 @@ public class AdminView extends JFrame implements AdminInterface {
         container.add(plants);
         container.add(scrollPane);
 
-
-        insert.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                adminPresenter.insertUser();
-                updateUsers();
-            }
-        });
-        delete.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                adminPresenter.deleteUser();
-                updateUsers();
-            }
-        });
-        update.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                adminPresenter.updateUser();
-                updateUsers();
-            }
-        });
-
-        plants.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                UserView userView = new UserView();
-                userView.setVisible(true);
-            }
-        });
     }
 
-    public void updateUsers() {
-        JTable table = adminPresenter.updateUserTable();
-        getScrollPane().setViewportView(table);
-        setVisible(true);
+    public int getId() {
+        return Integer.parseInt(id.getText());
     }
 
-    public int getIdField() {
-        return Integer.parseInt(idField.getText());
+    public JTable getUsersTable() {
+        return usersTable;
     }
 
-    public String getUserNameField() {
-        return userNameField.getText();
+    public void setUsersTable(JTable usersTable) {
+        this.usersTable = usersTable;
     }
 
-    public String getTypeField() {
-        return typeField.getText();
+    public void setId(JTextField id) {
+        this.id = id;
     }
 
-    public String getPasswordField() {
-        return passwordField.getText();
+    public String getUsername() {
+        return username.getText();
+    }
+
+    public void setUsername(JTextField username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password.getText();
+    }
+
+    public void setPassword(JTextField password) {
+        this.password = password;
+    }
+
+    public String getTypes() {
+        return type.getText();
+    }
+
+    public void setTypes(JTextField type) {
+        this.type = type;
+    }
+
+    public JButton getBack() {
+        return back;
+    }
+
+    public void setBack(JButton back) {
+        this.back = back;
+    }
+
+    public JButton getInsert() {
+        return insert;
+    }
+
+    public void setInsert(JButton insert) {
+        this.insert = insert;
+    }
+
+    public JButton getDelete() {
+        return delete;
+    }
+
+    public void setDelete(JButton delete) {
+        this.delete = delete;
+    }
+
+    public JButton getUpdate() {
+        return update;
+    }
+
+    public void setUpdate(JButton update) {
+        this.update = update;
+    }
+
+    public JButton getPlants() {
+        return plants;
+    }
+
+    public void setPlants(JButton plants) {
+        this.plants = plants;
     }
 
     public JScrollPane getScrollPane() {
-        return this.scrollPane;
+        return scrollPane;
+    }
+
+    public void setScrollPane(JScrollPane scrollPane) {
+        this.scrollPane = scrollPane;
     }
 
 }

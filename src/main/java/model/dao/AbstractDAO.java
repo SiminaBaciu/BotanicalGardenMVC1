@@ -155,43 +155,42 @@ public class AbstractDAO<T> {
      *
      * @return
      */
-    public JTable createTable() {
-        List<T> objects = findAll();
-        if (!objects.isEmpty()) {
-            int tableSize = objects.get(0).getClass().getDeclaredFields().length;
-            String[] columnNames = new String[tableSize];
-            int columnIndex = 0;
-            for (Field currentField : objects.get(0).getClass().getDeclaredFields()) {
+    public static JTable createTable(ArrayList<?> myList) {
+        int sizeTable = myList.get(0).getClass().getDeclaredFields().length;
+        String colName[] = new String[sizeTable];
+        int colInd = 0;
+        for (java.lang.reflect.Field field : myList.get(0).getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+            try {
+                colName[colInd] = field.getName();
+                colInd++;
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
+        }
+        DefaultTableModel tableModel = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tableModel.setColumnIdentifiers(colName);
+        for (Object o : myList) {
+            Object[] obj = new Object[sizeTable];
+            int col = 0;
+            for (java.lang.reflect.Field currentField : o.getClass().getDeclaredFields()) {
                 currentField.setAccessible(true);
                 try {
-                    columnNames[columnIndex] = currentField.getName();
-                    columnIndex++;
-                } catch (IllegalArgumentException e) {
+                    obj[col] = currentField.get(o);
+                    col++;
+                } catch (IllegalArgumentException | IllegalAccessException e) {
                     e.printStackTrace();
                 }
             }
-            DefaultTableModel myModel = new DefaultTableModel();
-            myModel.setColumnIdentifiers(columnNames);
-            for (Object o : objects) {
-                Object[] obj = new Object[tableSize];
-                int col = 0;
-                for (Field currentField : o.getClass().getDeclaredFields()) {
-                    currentField.setAccessible(true);
-                    try {
-                        obj[col] = currentField.get(o);
-                        col++;
-                    } catch (IllegalArgumentException | IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                }
-                myModel.addRow(obj);
-            }
-            JTable table = new JTable(myModel);
-            table.setEnabled(true);
-            table.setVisible(true);
-            return table;
+            tableModel.addRow(obj);
         }
-        return null;
+        JTable newTable = new JTable(tableModel);
+        return newTable;
     }
 
     public void tryConnection(String query) throws SQLException {
